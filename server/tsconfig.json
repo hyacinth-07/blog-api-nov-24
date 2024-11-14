@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "NodeNext",
+		"moduleResolution": "nodenext", // Ensure TypeScript can resolve Node.js modules
+		"lib": ["ES2020"],
+		"outDir": "./dist", // Output compiled files to the "dist" folder
+		"rootDir": "./src", // Specifies the root directory of input files
+		"strict": true, // Enable all strict type-checking options
+		"esModuleInterop": true, // Allow default imports from modules with no default export
+		"skipLibCheck": true, // Skip type checking of all declaration files (.d.ts)
+		"forceConsistentCasingInFileNames": true // Enforce consistent casing across file names
+	},
+	"include": ["src"], // Include all TypeScript files in the "src" folder
+	"exclude": ["node_modules", "dist"] // Exclude node_modules and dist folders
+}
