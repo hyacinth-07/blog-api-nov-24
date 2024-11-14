@@ -13,7 +13,7 @@
 
 ## Server
 
-- Primsa ORM (with MySQL)
+- Primsa ORM (with PostgreSQL)
 - Supabase Storage
 - Multer
 - Express (express-session, express-validator)
