@@ -5,12 +5,12 @@ app.use(express.json());
 // .ENV
 import 'dotenv/config';
 const port = process.env.PORT;
-// prisma connect
+///// PRISMA CONNECTION /////
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 async function main() {
-    const allUsers = await prisma.user.findMany();
-    console.log(allUsers);
+    const user = await prisma.user.findMany();
+    console.log(user);
 }
 main()
     .then(async () => {
@@ -21,7 +21,7 @@ main()
     await prisma.$disconnect();
     process.exit(1);
 });
-////
+///// ROUTES
 app.get('/', (req, res) => {
     res.send('hello world, tommy');
 });
