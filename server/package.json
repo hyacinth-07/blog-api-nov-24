@@ -2,7 +2,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"server": "node dist/server.js"
+		"dev": "tsc && node dist/server.js"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.22.0",

@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model TestObject {
+  id     String @unique @default(uuid())
+  number Int
+}
+
 model User {
   id        String    @unique @default(uuid())
   name      String    @unique
