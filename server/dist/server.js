@@ -8,10 +8,7 @@ const port = process.env.PORT;
 ///// PRISMA CONNECTION /////
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-async function main() {
-    const user = await prisma.user.findMany();
-    console.log(user);
-}
+async function main() { }
 main()
     .then(async () => {
     await prisma.$disconnect();
@@ -22,9 +19,8 @@ main()
     process.exit(1);
 });
 ///// ROUTES
-app.get('/', (req, res) => {
-    res.send('hello world, tommy');
-});
+import blogRoutes from './routes/blogRoutes.js';
+app.use('/api', blogRoutes);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });

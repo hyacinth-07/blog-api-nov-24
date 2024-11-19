@@ -25,9 +25,8 @@ main()
 
 ///// ROUTES
 
-app.get('/', (req, res) => {
-	res.send('hello world, tommy');
-});
+import blogRoutes from './routes/blogRoutes.js';
+app.use('/api', blogRoutes);
 
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
