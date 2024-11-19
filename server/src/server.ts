@@ -11,7 +11,19 @@ const port = process.env.PORT;
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-async function main() {}
+import * as dbFunctions from './prisma/dbFunctions.js';
+import * as types from './types/types.js';
+
+const newUser: types.User = {
+	name: 'Carlo',
+	email: 'carlo@onio.com',
+	password: 'monkey',
+	isAuthor: false,
+};
+
+async function main() {
+	// dbFunctions.addUser(newUser);
+}
 
 main()
 	.then(async () => {
