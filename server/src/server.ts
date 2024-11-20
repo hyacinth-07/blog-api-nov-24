@@ -10,19 +10,12 @@ const port = process.env.PORT;
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-
-import * as dbFunctions from './prisma/dbFunctions.js';
-import * as types from './types/types.js';
-
-const newUser: types.User = {
-	name: 'Carlo',
-	email: 'carlo@onio.com',
-	password: 'monkey',
-	isAuthor: false,
-};
+import { resetDatabase } from './prisma/dbScript.js';
 
 async function main() {
-	// dbFunctions.addUser(newUser);
+	// uncomment if you want to reset the db, but beware
+	// I should probably just call the script from NPM, but for now it'll do
+	// resetDatabase();
 }
 
 main()

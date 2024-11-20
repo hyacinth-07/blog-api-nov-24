@@ -28,5 +28,5 @@ export const addUser = async (user: types.User): Promise<void> => {
 			isAuthor: user.isAuthor,
 		},
 	});
-	console.log(newUser);
+	// console.log(newUser);
 };
