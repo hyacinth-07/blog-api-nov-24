@@ -2,7 +2,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"dev": "tsx --watch src/server.ts"
+		"dev": "tsx --watch src/server.ts",
+		"populate": "tsx src/prisma/dbScript.ts"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.22.0",

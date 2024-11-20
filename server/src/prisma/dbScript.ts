@@ -6,22 +6,55 @@ import * as types from '../types/types.js';
 
 // create a script that fills the db with a bunch of usable material
 
-export const resetDatabase = async (): Promise<void> => {
-	// 1. clean the db
+// 1. clean the db
+async function clearDb(): Promise<void> {
 	await prisma.post.deleteMany();
 	await prisma.comment.deleteMany();
 	await prisma.user.deleteMany();
+	console.log('Database Cleared');
+}
 
-	// 2. add users
-
+// 2. add users
+async function scriptUsers(): Promise<void> {
 	newUsers.forEach((elem) => {
 		dbFunctions.addUser(elem);
 		console.log(`Created user: ${elem.name}`);
 	});
+}
 
-	// 3. add posts (search for user name, get id)
-	// 4. add comments
-};
+// 3. add posts (search for user name, get id)
+async function scriptPosts(): Promise<void> {
+	const users = await prisma.user.findMany({
+		where: {
+			isAuthor: true,
+		},
+	});
+
+	newPosts.forEach((elem) => {
+		const randomIndex = Math.floor(Math.random() * users.length);
+		elem.authorId = users[randomIndex].id;
+		dbFunctions.addPost(elem);
+		console.log(`Created post: ${elem.title}`);
+	});
+}
+
+// by adding half a second of delay, the db has time to update and return
+// more requests. Not very elegant, but it works.
+function delay(ms: number): Promise<void> {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// 4. add comments
+async function scriptComments(): Promise<void> {
+	const users = await prisma.user.findMany();
+
+	newComments.forEach((elem) => {
+		const randomIndex = Math.floor(Math.random() * users.length);
+		elem.authorId = users[randomIndex].id;
+		dbFunctions.addComment(elem);
+		console.log(`Created comment: ${elem.body.substring(0, 20)} ...`);
+	});
+}
 
 const newUsers: Array<types.User> = [
 	{
@@ -49,3 +82,98 @@ const newUsers: Array<types.User> = [
 		isAuthor: false,
 	},
 ];
+
+const newPosts: Array<types.Post> = [
+	{
+		title: 'The Rise of TypeScript',
+		body: 'TypeScript has become one of the most popular programming languages for building robust and scalable applications.',
+		authorId: '',
+		isPublished: true,
+	},
+	{
+		title: 'Understanding Async/Await in JavaScript',
+		body: 'Async/await simplifies working with asynchronous code in JavaScript, making it easier to write and debug.',
+		authorId: '',
+		isPublished: false,
+	},
+	{
+		title: '10 Tips for Writing Clean Code',
+		body: 'Writing clean code is essential for maintaining and scaling applications. Here are 10 tips to help you write better code.',
+		authorId: '',
+		isPublished: true,
+	},
+];
+
+const newComments: Array<types.Comment> = [
+	{
+		body: 'This is such an insightful post! Thank you for sharing.',
+		authorId: 'user1',
+		likes: 45,
+		dislikes: 2,
+	},
+	{
+		body: 'I have a different perspective on this topic. Here’s my take...',
+		authorId: 'user2',
+		likes: 12,
+		dislikes: 5,
+	},
+	{
+		body: 'Amazing explanation, very clear and well-written!',
+		authorId: 'user3',
+		likes: 34,
+		dislikes: 1,
+	},
+	{
+		body: 'I found this post a bit confusing. Could you clarify?',
+		authorId: 'user4',
+		likes: 8,
+		dislikes: 3,
+	},
+	{
+		body: 'Great content! I’ll definitely share this with my team.',
+		authorId: 'user5',
+		likes: 20,
+		dislikes: 0,
+	},
+	{
+		body: 'I disagree with some points, but overall a good read.',
+		authorId: 'user6',
+		likes: 15,
+		dislikes: 10,
+	},
+	{
+		body: 'Wow, this is exactly what I was looking for! Thanks!',
+		authorId: 'user7',
+		likes: 50,
+		dislikes: 4,
+	},
+	{
+		body: 'Could you provide more examples next time? Thanks!',
+		authorId: 'user8',
+		likes: 5,
+		dislikes: 0,
+	},
+];
+
+// DB CONNECTION
+
+async function main() {
+	console.log('--- Initiating database reset ---');
+	await clearDb();
+	await scriptUsers();
+	await delay(500);
+	await scriptPosts();
+	await delay(500);
+	await scriptComments();
+	console.log('--- Database reset successful ---');
+}
+
+main()
+	.then(async () => {
+		await prisma.$disconnect();
+	})
+	.catch(async (e) => {
+		console.error(e);
+		await prisma.$disconnect();
+		process.exit(1);
+	});

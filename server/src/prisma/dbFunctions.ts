@@ -1,4 +1,4 @@
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // TYPES
@@ -20,7 +20,7 @@ export const addPost = async (post: types.Post): Promise<void> => {
 // ADD USER
 
 export const addUser = async (user: types.User): Promise<void> => {
-	const newUser = await prisma.user.create({
+	await prisma.user.create({
 		data: {
 			name: user.name,
 			email: user.email,
@@ -28,5 +28,17 @@ export const addUser = async (user: types.User): Promise<void> => {
 			isAuthor: user.isAuthor,
 		},
 	});
-	// console.log(newUser);
+};
+
+// ADD COMMENT
+
+export const addComment = async (comment: types.Comment): Promise<void> => {
+	await prisma.comment.create({
+		data: {
+			body: comment.body,
+			authorId: comment.authorId,
+			likes: comment.likes,
+			dislikes: comment.dislikes,
+		},
+	});
 };

@@ -10,13 +10,8 @@ const port = process.env.PORT;
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import { resetDatabase } from './prisma/dbScript.js';
 
-async function main() {
-	// uncomment if you want to reset the db, but beware
-	// I should probably just call the script from NPM, but for now it'll do
-	// resetDatabase();
-}
+async function main() {}
 
 main()
 	.then(async () => {
