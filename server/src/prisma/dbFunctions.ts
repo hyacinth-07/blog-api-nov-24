@@ -42,3 +42,14 @@ export const addComment = async (comment: types.Comment): Promise<void> => {
 		},
 	});
 };
+
+// GET ALL COMMENTS
+
+export const getAllPosts = async (): Promise<types.Post[]> => {
+	const allPosts = await prisma.post.findMany({
+		where: {
+			isPublished: true,
+		},
+	});
+	return allPosts;
+};

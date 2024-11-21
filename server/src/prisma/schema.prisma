@@ -9,14 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-}
-
-model TestObject {
-  id     String @unique @default(uuid())
-  number Int
 }
 
 model User {
@@ -26,28 +21,31 @@ model User {
   password  String
   createdAt DateTime  @default(now())
   isAuthor  Boolean   @default(false)
-  posts     Post[]    @relation("posts")
-  comments  Comment[] @relation("comments")
+  posts     Post[]    @relation("authoredPosts")
+  comments  Comment[] @relation("authoredComments")
 }
 
 model Post {
-  id          String   @unique @default(uuid())
+  id          String    @unique @default(uuid())
   title       String
   body        String
-  author      User     @relation("posts", fields: [authorId], references: [id])
+  author      User      @relation("authoredPosts", fields: [authorId], references: [id])
   authorId    String
-  isPublished Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[] @relation("comments")
 }
 
 model Comment {
-  id        String   @unique @default(uuid())
-  body      String
-  author    User     @relation("comments", fields: [authorId], references: [id])
-  authorId  String
-  likes     Int      @default(0)
-  dislikes  Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @unique @default(uuid())
+  body          String
+  author        User     @relation("authoredComments", fields: [authorId], references: [id])
+  authorId      String
+  postComment   Post     @relation("comments", fields: [postCommentId], references: [id])
+  postCommentId String
+  likes         Int      @default(0)
+  dislikes      Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
