@@ -34,7 +34,7 @@ model Post {
   isPublished Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  comments    Comment[] @relation("comments")
+  comments    Comment[] @relation("postComments")
 }
 
 model Comment {
@@ -42,7 +42,7 @@ model Comment {
   body          String
   author        User     @relation("authoredComments", fields: [authorId], references: [id])
   authorId      String
-  postComment   Post     @relation("comments", fields: [postCommentId], references: [id])
+  postComment   Post     @relation("postComments", fields: [postCommentId], references: [id])
   postCommentId String
   likes         Int      @default(0)
   dislikes      Int      @default(0)

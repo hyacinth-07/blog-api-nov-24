@@ -37,6 +37,7 @@ export const addComment = async (comment: types.Comment): Promise<void> => {
 		data: {
 			body: comment.body,
 			authorId: comment.authorId,
+			postCommentId: comment.postCommentId,
 			likes: comment.likes,
 			dislikes: comment.dislikes,
 		},
