@@ -9,12 +9,17 @@ import * as blog from '../controllers/blogController.js';
 ///// NAVIGATION
 
 // MAIN PAGE
-
 router.get('/', blog.mainPage);
 
-// INDIVIDUAL ARTICLE PAGE
+// INDIVIDUAL POST PAGE
+router.get('/:postId', blog.onePostPage);
 
 // POST COMMENTS
+
+///// USER PAGES
+
+// USER HOME
+router.get('/user/:userId', blog.userHomePage);
 
 ///// AUTH /////
 

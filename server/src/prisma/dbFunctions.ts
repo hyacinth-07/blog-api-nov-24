@@ -51,6 +51,35 @@ export const getAllPosts = async (): Promise<types.Post[]> => {
 		where: {
 			isPublished: true,
 		},
+		include: {
+			comments: {
+				orderBy: {
+					likes: 'desc',
+				},
+			},
+		},
 	});
 	return allPosts;
+};
+
+// GET ONE COMMENT
+
+export const getOnePost = async (
+	commentId: string
+): Promise<types.Post | null> => {
+	const onePost = await prisma.post.findUnique({
+		where: {
+			isPublished: true,
+			id: commentId,
+		},
+		include: {
+			comments: {
+				orderBy: {
+					likes: 'desc',
+				},
+			},
+		},
+	});
+
+	return onePost;
 };
