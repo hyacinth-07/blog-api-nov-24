@@ -27,9 +27,10 @@ main()
 
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
-import passport from 'passport';
+import passport, { use } from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 const secret = process.env.SESSION_SECRET as string;
+import * as auth from './auth/auth.js';
 
 app.use(
 	session({
@@ -49,6 +50,32 @@ app.use(
 
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+
+// login
+
+passport.use(
+	new LocalStrategy(async (username, password, done) => {
+		try {
+			auth.loginUser(username, password, done);
+		} catch (e) {
+			return done(e);
+		}
+	})
+);
+
+// serialize/deserialize
+
+// passport.serializeUser((user, done) => {
+// 	done(null, user.id);
+// });
+
+// passport.deserializeUser(async (id, done) => {
+// 	try {
+// 		auth.deserializeUser(id, done);
+// 	} catch (err) {
+// 		done(err);
+// 	}
+// });
 
 ///// ROUTES
 
