@@ -4,8 +4,8 @@ import * as dbFunctions from './dbFunctions.js';
 // create a script that fills the db with a bunch of usable material
 // 1. clean the db
 async function clearDb() {
-    await prisma.post.deleteMany();
     await prisma.comment.deleteMany();
+    await prisma.post.deleteMany();
     await prisma.user.deleteMany();
     console.log('Database Cleared');
 }

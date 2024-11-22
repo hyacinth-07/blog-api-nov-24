@@ -8,8 +8,8 @@ import * as types from '../types/types.js';
 
 // 1. clean the db
 async function clearDb(): Promise<void> {
-	await prisma.post.deleteMany();
 	await prisma.comment.deleteMany();
+	await prisma.post.deleteMany();
 	await prisma.user.deleteMany();
 	console.log('Database Cleared');
 }

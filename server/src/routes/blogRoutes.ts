@@ -27,6 +27,8 @@ router.get('/user/:userId', blog.userHomePage);
 
 // LOG IN (get, post)
 
+router.post('/login', blog.validateSignUp, blog.userLogin);
+
 // LOG OUT
 
 export default router;
