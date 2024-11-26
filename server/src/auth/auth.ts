@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { RequestHandler } from 'express';
 const prisma = new PrismaClient();
 
 // LOGIN USER
@@ -36,18 +35,3 @@ export const loginUser = async (
 	// }
 	// return done(null, user);
 };
-
-// export const deserializeUser = async (
-// 	id: string,
-// 	done: (error: any, user?: Express.User | null) => void
-// ): Promise<void> => {
-// 	const user = await prisma.user.findUnique({
-// 		where: { id },
-// 	});
-
-// 	if (!user) {
-// 		return done(null, null); // User not found
-// 	}
-
-// 	done(null, user); // User found
-// };

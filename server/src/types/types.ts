@@ -5,6 +5,10 @@ export type User = {
 	isAuthor: boolean;
 };
 
+export type UserLogin = {
+	id?: string;
+};
+
 export type Post = {
 	title: string;
 	body: string;

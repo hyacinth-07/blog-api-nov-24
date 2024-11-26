@@ -7,6 +7,7 @@ async function clearDb() {
     await prisma.comment.deleteMany();
     await prisma.post.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.session.deleteMany();
     console.log('Database Cleared');
 }
 // 2. add users

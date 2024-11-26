@@ -22,10 +22,12 @@ main()
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 const secret = process.env.SESSION_SECRET;
+import * as auth from './auth/auth.js';
 app.use(session({
     cookie: {
-        maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+        maxAge: 2 * 60 * 60 * 1000, // ms, two hours
     },
     secret: secret,
     resave: true,
@@ -38,6 +40,40 @@ app.use(session({
 }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+// login
+passport.use(new LocalStrategy(async (username, password, done) => {
+    try {
+        auth.loginUser(username, password, done);
+    }
+    catch (e) {
+        return done(e);
+    }
+}));
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+    try {
+        const rows = await prisma.user.findUnique({
+            where: { id: id },
+        });
+        const user = rows;
+        if (user) {
+            done(null, user);
+        }
+        else {
+            done(null, false);
+        }
+    }
+    catch (err) {
+        done(err);
+    }
+});
+// authenticate
+app.post('/api/login', passport.authenticate('local', {
+    successRedirect: '/api',
+    failureRedirect: '/api/login',
+}));
 ///// ROUTES
 import blogRoutes from './routes/blogRoutes.js';
 app.use('/api', blogRoutes);

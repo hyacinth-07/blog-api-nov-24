@@ -35,7 +35,7 @@ import * as auth from './auth/auth.js';
 app.use(
 	session({
 		cookie: {
-			maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+			maxAge: 2 * 60 * 60 * 1000, // ms, two hours
 		},
 		secret: secret,
 		resave: true,
@@ -65,17 +65,42 @@ passport.use(
 
 // serialize/deserialize
 
-// passport.serializeUser((user, done) => {
-// 	done(null, user.id);
-// });
+import * as types from './types/types.js';
 
-// passport.deserializeUser(async (id, done) => {
-// 	try {
-// 		auth.deserializeUser(id, done);
-// 	} catch (err) {
-// 		done(err);
-// 	}
-// });
+passport.serializeUser(
+	(user: types.UserLogin, done: (err: any, id?: unknown) => void) => {
+		done(null, user.id);
+	}
+);
+
+passport.deserializeUser(
+	async (id: string, done: (err: any, user?: types.User | false) => void) => {
+		try {
+			const rows = await prisma.user.findUnique({
+				where: { id: id },
+			});
+			const user = rows;
+
+			if (user) {
+				done(null, user);
+			} else {
+				done(null, false);
+			}
+		} catch (err) {
+			done(err);
+		}
+	}
+);
+
+// authenticate
+
+app.post(
+	'/api/login',
+	passport.authenticate('local', {
+		successRedirect: '/api',
+		failureRedirect: '/api/login',
+	})
+);
 
 ///// ROUTES
 

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 import * as blog from '../controllers/blogController.js';
+import * as utils from '../controllers/utilities.js';
 
 // NEED TO DO
 // 1. validation middleware
@@ -9,7 +10,7 @@ import * as blog from '../controllers/blogController.js';
 ///// NAVIGATION
 
 // MAIN PAGE
-router.get('/', blog.mainPage);
+router.get('/', utils.logUser, blog.mainPage);
 
 // INDIVIDUAL POST PAGE
 router.get('/:postId', blog.onePostPage);
@@ -24,11 +25,11 @@ router.get('/user/:userId', blog.userHomePage);
 ///// AUTH /////
 
 // SIGN UP
+router.post('/signup', blog.validateSignUp, blog.userSignUp);
 
-// LOG IN (get, post)
-
-router.post('/login', blog.validateSignUp, blog.userLogin);
+// LOG IN (get, post is in server.ts)
 
 // LOG OUT
+router.get('/logout', blog.logOut);
 
 export default router;

@@ -5,13 +5,16 @@ export const mainPage = async (req, res) => {
     const posts = await dbFunctions.getAllPosts();
     res.send(posts);
 };
+// SINGLE ARTICLE PAGE
 export const onePostPage = async (req, res) => {
     const post = await dbFunctions.getOnePost(req.params.postId);
     res.send(post);
 };
+// USER HOME PAGE
 export const userHomePage = async (req, res) => {
     res.send('Welcome user!');
 };
+// SIGN UP
 export const validateSignUp = [
     body('username')
         .trim()
@@ -30,7 +33,7 @@ export const validateSignUp = [
         .withMessage('Email is required')
         .escape(),
 ];
-export const userLogin = async (req, res, next) => {
+export const userSignUp = async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
@@ -61,4 +64,12 @@ export const userLogin = async (req, res, next) => {
             return next(e);
         }
     }
+};
+// LOG OUT
+export const logOut = async (req, res, next) => {
+    req.logout((error) => {
+        if (error)
+            return next(error);
+    });
+    res.redirect('/');
 };

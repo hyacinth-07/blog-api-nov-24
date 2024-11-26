@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import * as dbFunctions from '../prisma/dbFunctions.js';
 import { body, validationResult } from 'express-validator';
 import * as types from '../types/types.js';
@@ -10,6 +10,8 @@ export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	res.send(posts);
 };
 
+// SINGLE ARTICLE PAGE
+
 export const onePostPage = async (
 	req: Request,
 	res: Response
@@ -18,12 +20,16 @@ export const onePostPage = async (
 	res.send(post);
 };
 
+// USER HOME PAGE
+
 export const userHomePage = async (
 	req: Request,
 	res: Response
 ): Promise<void> => {
 	res.send('Welcome user!');
 };
+
+// SIGN UP
 
 export const validateSignUp = [
 	body('username')
@@ -44,7 +50,7 @@ export const validateSignUp = [
 		.escape(),
 ];
 
-export const userLogin = async (
+export const userSignUp = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
@@ -80,4 +86,17 @@ export const userLogin = async (
 			return next(e);
 		}
 	}
+};
+
+// LOG OUT
+
+export const logOut = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	req.logout((error) => {
+		if (error) return next(error);
+	});
+	res.redirect('/');
 };
