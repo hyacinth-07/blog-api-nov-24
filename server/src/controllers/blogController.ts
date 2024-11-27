@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import * as dbFunctions from '../prisma/dbFunctions.js';
 import { body, validationResult } from 'express-validator';
 import * as types from '../types/types.js';
+import bcrypt from 'bcryptjs';
 
 // MAIN PAGE
 
@@ -80,6 +81,7 @@ export const userSignUp = async (
 				password: password,
 				isAuthor: false,
 			};
+
 			await dbFunctions.addUser(newUser);
 			res.redirect('/');
 		} catch (e) {

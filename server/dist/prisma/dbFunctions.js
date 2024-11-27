@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
+import bcrypt from 'bcryptjs';
 // ADD POST
 export const addPost = async (post) => {
     await prisma.post.create({
@@ -13,13 +14,18 @@ export const addPost = async (post) => {
 };
 // ADD USER
 export const addUser = async (user) => {
-    await prisma.user.create({
-        data: {
-            name: user.name,
-            email: user.email,
-            password: user.password,
-            isAuthor: user.isAuthor,
-        },
+    bcrypt.hash(user.password, 10, async (err, hashedPassword) => {
+        if (err)
+            return err;
+        user.password = hashedPassword;
+        await prisma.user.create({
+            data: {
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                isAuthor: user.isAuthor,
+            },
+        });
     });
 };
 // ADD COMMENT
