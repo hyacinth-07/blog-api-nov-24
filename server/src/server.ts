@@ -92,7 +92,7 @@ passport.deserializeUser(
 	}
 );
 
-// authenticate
+// authenticate, login and logout
 
 app.post(
 	'/api/login',
@@ -101,6 +101,15 @@ app.post(
 		failureRedirect: '/api/login',
 	})
 );
+
+import { Request, Response, NextFunction } from 'express';
+
+app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
+	req.logout((err) => {
+		if (err) return next(err);
+		res.redirect('/api');
+	});
+});
 
 ///// ROUTES
 

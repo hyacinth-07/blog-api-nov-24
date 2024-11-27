@@ -57,12 +57,6 @@ export const userSignUp = async (req, res, next) => {
                 password: password,
                 isAuthor: false,
             };
-            // bcrypt.hash(password, 10, async (err, hashedPassword) => {
-            // 	if (err) return err;
-            // 	newUser.password = hashedPassword;
-            // 	await dbFunctions.addUser(newUser);
-            // 	res.redirect('/');
-            // });
             await dbFunctions.addUser(newUser);
             res.redirect('/');
         }
@@ -73,9 +67,9 @@ export const userSignUp = async (req, res, next) => {
 };
 // LOG OUT
 export const logOut = async (req, res, next) => {
-    req.logout((error) => {
-        if (error)
-            return next(error);
+    req.logout((err) => {
+        if (err)
+            return next(err);
+        res.redirect('/');
     });
-    res.redirect('/');
 };

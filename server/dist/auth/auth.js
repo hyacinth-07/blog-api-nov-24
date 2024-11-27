@@ -10,10 +10,6 @@ export const loginUser = async (username, password, done) => {
     if (!user) {
         return done(null, false, { message: 'Incorrect username' });
     }
-    // if (user.password !== password) {
-    // 	return done(null, false, { message: 'Incorrect password' });
-    // }
-    // return done(null, user);
     // check hashed passwords
     const match = await bcrypt.compare(password, user.password);
     if (!match) {

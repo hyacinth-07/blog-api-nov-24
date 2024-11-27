@@ -83,7 +83,7 @@ export const userSignUp = async (
 			};
 
 			await dbFunctions.addUser(newUser);
-			res.redirect('/');
+			res.redirect('/api');
 		} catch (e) {
 			return next(e);
 		}
@@ -91,14 +91,15 @@ export const userSignUp = async (
 };
 
 // LOG OUT
+// not currently in use
 
 export const logOut = async (
 	req: Request,
 	res: Response,
 	next: NextFunction
-): Promise<void> => {
-	req.logout((error) => {
-		if (error) return next(error);
+) => {
+	req.logout((err) => {
+		if (err) return next(err);
+		res.redirect('/');
 	});
-	res.redirect('/');
 };

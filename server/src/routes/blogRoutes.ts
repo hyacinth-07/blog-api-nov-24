@@ -30,6 +30,6 @@ router.post('/signup', blog.validateSignUp, blog.userSignUp);
 // LOG IN (get, post is in server.ts)
 
 // LOG OUT
-router.get('/logout', blog.logOut);
+// router.get('/logout', blog.logOut);
 
 export default router;

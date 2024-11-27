@@ -74,6 +74,13 @@ app.post('/api/login', passport.authenticate('local', {
     successRedirect: '/api',
     failureRedirect: '/api/login',
 }));
+app.get('/api/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err)
+            return next(err);
+        res.redirect('/');
+    });
+});
 ///// ROUTES
 import blogRoutes from './routes/blogRoutes.js';
 app.use('/api', blogRoutes);

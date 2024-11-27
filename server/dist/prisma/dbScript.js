@@ -161,7 +161,7 @@ async function main() {
     console.log('--- Initiating database reset ---');
     await clearDb();
     await scriptUsers();
-    await delay(500);
+    await delay(1000);
     await scriptPosts();
     await delay(500);
     await scriptComments();
