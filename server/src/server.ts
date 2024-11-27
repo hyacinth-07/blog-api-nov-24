@@ -27,89 +27,103 @@ main()
 
 import session from 'express-session';
 import { PrismaSessionStore } from '@quixo3/prisma-session-store';
-import passport, { use } from 'passport';
+// import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 const secret = process.env.SESSION_SECRET as string;
 import * as auth from './auth/auth.js';
 
-app.use(
-	session({
-		cookie: {
-			maxAge: 2 * 60 * 60 * 1000, // ms, two hours
-		},
-		secret: secret,
-		resave: true,
-		saveUninitialized: true,
-		store: new PrismaSessionStore(new PrismaClient(), {
-			checkPeriod: 2 * 60 * 1000, //ms
-			dbRecordIdIsSessionId: true,
-			dbRecordIdFunction: undefined,
-		}),
-	})
-);
+// NEW IMPORTS ------
 
+import sessionMiddleware from './auth/session.js';
+import passport from './auth/passport.js';
+import authRoutes from './auth/routes.js';
+
+app.use(express.json());
+app.use(sessionMiddleware);
+app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/auth', authRoutes);
+
 app.use(express.urlencoded({ extended: false }));
+
+// app.use(
+// 	session({
+// 		cookie: {
+// 			maxAge: 2 * 60 * 60 * 1000, // ms, two hours
+// 		},
+// 		secret: secret,
+// 		resave: true,
+// 		saveUninitialized: true,
+// 		store: new PrismaSessionStore(new PrismaClient(), {
+// 			checkPeriod: 2 * 60 * 1000, //ms
+// 			dbRecordIdIsSessionId: true,
+// 			dbRecordIdFunction: undefined,
+// 		}),
+// 	})
+// );
+
+// app.use(passport.session());
 
 // login
 
-passport.use(
-	new LocalStrategy(async (username, password, done) => {
-		try {
-			auth.loginUser(username, password, done);
-		} catch (e) {
-			return done(e);
-		}
-	})
-);
+// passport.use(
+// 	new LocalStrategy(async (username, password, done) => {
+// 		try {
+// 			auth.loginUser(username, password, done);
+// 		} catch (e) {
+// 			return done(e);
+// 		}
+// 	})
+// );
 
-// serialize/deserialize
+// // serialize/deserialize
 
-import * as types from './types/types.js';
+// import * as types from './types/types.js';
 
-passport.serializeUser(
-	(user: types.UserLogin, done: (err: any, id?: unknown) => void) => {
-		done(null, user.id);
-	}
-);
+// passport.serializeUser(
+// 	(user: types.UserLogin, done: (err: any, id?: unknown) => void) => {
+// 		done(null, user.id);
+// 	}
+// );
 
-passport.deserializeUser(
-	async (id: string, done: (err: any, user?: types.User | false) => void) => {
-		try {
-			const rows = await prisma.user.findUnique({
-				where: { id: id },
-			});
-			const user = rows;
+// passport.deserializeUser(
+// 	async (id: string, done: (err: any, user?: types.User | false) => void) => {
+// 		try {
+// 			const rows = await prisma.user.findUnique({
+// 				where: { id: id },
+// 			});
+// 			const user = rows;
 
-			if (user) {
-				done(null, user);
-			} else {
-				done(null, false);
-			}
-		} catch (err) {
-			done(err);
-		}
-	}
-);
+// 			if (user) {
+// 				done(null, user);
+// 			} else {
+// 				done(null, false);
+// 			}
+// 		} catch (err) {
+// 			done(err);
+// 		}
+// 	}
+// );
 
 // authenticate, login and logout
 
-app.post(
-	'/api/login',
-	passport.authenticate('local', {
-		successRedirect: '/api',
-		failureRedirect: '/api/login',
-	})
-);
+// app.post(
+// 	'/api/login',
+// 	passport.authenticate('local', {
+// 		successRedirect: '/api',
+// 		failureRedirect: '/api/login',
+// 	})
+// );
 
 import { Request, Response, NextFunction } from 'express';
 
-app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
-	req.logout((err) => {
-		if (err) return next(err);
-		res.redirect('/api');
-	});
-});
+// app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
+// 	req.logout((err) => {
+// 		if (err) return next(err);
+// 		res.redirect('/api');
+// 	});
+// });
 
 ///// ROUTES
 

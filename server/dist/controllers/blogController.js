@@ -58,7 +58,7 @@ export const userSignUp = async (req, res, next) => {
                 isAuthor: false,
             };
             await dbFunctions.addUser(newUser);
-            res.redirect('/');
+            res.redirect('/api');
         }
         catch (e) {
             return next(e);
@@ -66,6 +66,7 @@ export const userSignUp = async (req, res, next) => {
     }
 };
 // LOG OUT
+// not currently in use
 export const logOut = async (req, res, next) => {
     req.logout((err) => {
         if (err)

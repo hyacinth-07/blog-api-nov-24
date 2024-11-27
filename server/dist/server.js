@@ -18,69 +18,23 @@ main()
     await prisma.$disconnect();
     process.exit(1);
 });
-///// AUTH /////
-import session from 'express-session';
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
 const secret = process.env.SESSION_SECRET;
-import * as auth from './auth/auth.js';
-app.use(session({
-    cookie: {
-        maxAge: 2 * 60 * 60 * 1000, // ms, two hours
-    },
-    secret: secret,
-    resave: true,
-    saveUninitialized: true,
-    store: new PrismaSessionStore(new PrismaClient(), {
-        checkPeriod: 2 * 60 * 1000, //ms
-        dbRecordIdIsSessionId: true,
-        dbRecordIdFunction: undefined,
-    }),
-}));
+// NEW IMPORTS ------
+import sessionMiddleware from './auth/session.js';
+import passport from './auth/passport.js';
+import authRoutes from './auth/routes.js';
+app.use(express.json());
+app.use(sessionMiddleware);
+app.use(passport.initialize());
 app.use(passport.session());
+app.use('/auth', authRoutes);
 app.use(express.urlencoded({ extended: false }));
-// login
-passport.use(new LocalStrategy(async (username, password, done) => {
-    try {
-        auth.loginUser(username, password, done);
-    }
-    catch (e) {
-        return done(e);
-    }
-}));
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-passport.deserializeUser(async (id, done) => {
-    try {
-        const rows = await prisma.user.findUnique({
-            where: { id: id },
-        });
-        const user = rows;
-        if (user) {
-            done(null, user);
-        }
-        else {
-            done(null, false);
-        }
-    }
-    catch (err) {
-        done(err);
-    }
-});
-// authenticate
-app.post('/api/login', passport.authenticate('local', {
-    successRedirect: '/api',
-    failureRedirect: '/api/login',
-}));
-app.get('/api/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err)
-            return next(err);
-        res.redirect('/');
-    });
-});
+// app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
+// 	req.logout((err) => {
+// 		if (err) return next(err);
+// 		res.redirect('/api');
+// 	});
+// });
 ///// ROUTES
 import blogRoutes from './routes/blogRoutes.js';
 app.use('/api', blogRoutes);
