@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 
 export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	const posts = await dbFunctions.getAllPosts();
-	res.send(posts);
+	res.json(posts);
 };
 
 // SINGLE ARTICLE PAGE
