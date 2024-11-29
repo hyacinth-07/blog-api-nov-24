@@ -1,4 +1,4 @@
-import { Post } from '../types/Post';
+import { Post } from '../types/types';
 
 export default function PostItem({ elem }: { elem: Post }) {
 	return (
