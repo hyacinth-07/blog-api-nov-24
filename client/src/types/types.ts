@@ -7,6 +7,7 @@ export type Post = {
 	comments: Array<Comment>;
 	createdAt: string | Date;
 	updatedAt: string | Date;
+	author: User;
 };
 
 export type Comment = {
@@ -18,4 +19,14 @@ export type Comment = {
 	dislikes: number;
 	createdAt: string | Date;
 	updatedAt: string | Date;
+	author: User;
+};
+
+type User = {
+	id: string;
+	name: string;
+	email: string;
+	password: string;
+	createdAt: string | Date;
+	isAuthor: boolean;
 };

@@ -62,7 +62,11 @@ export const getAllPosts = async (): Promise<types.Post[]> => {
 				orderBy: {
 					likes: 'desc',
 				},
+				include: {
+					author: true,
+				},
 			},
+			author: true,
 		},
 	});
 	return allPosts;
@@ -83,7 +87,11 @@ export const getOnePost = async (
 				orderBy: {
 					likes: 'desc',
 				},
+				include: {
+					author: true,
+				},
 			},
+			author: true,
 		},
 	});
 
