@@ -1,6 +1,10 @@
 import { Post } from '../types/types';
 
-export default function PostItem({ elem }: { elem: Post }) {
+type PostProp = {
+	elem: Post;
+};
+
+export default function PostItem({ elem }: PostProp) {
 	return (
 		<>
 			<article>
