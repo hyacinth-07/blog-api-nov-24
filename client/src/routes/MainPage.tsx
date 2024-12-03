@@ -25,10 +25,7 @@ export default function MainPage() {
 
 	return (
 		<>
-			<div>
-				<h1>React + Express Fetch Example</h1>
-				{posts}
-			</div>
+			<div>{posts}</div>
 		</>
 	);
 }

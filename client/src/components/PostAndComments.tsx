@@ -10,7 +10,6 @@ export default function PostItem({ elem }: PostProp) {
 	const date = formatDate(elem.createdAt);
 
 	const comments = elem.comments.map((c) => <CommentBox elem={c} />);
-	console.log(comments);
 
 	return (
 		<>
