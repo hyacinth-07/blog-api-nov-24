@@ -51,7 +51,11 @@ export const getAllPosts = async () => {
                 orderBy: {
                     likes: 'desc',
                 },
+                include: {
+                    author: true,
+                },
             },
+            author: true,
         },
     });
     return allPosts;
@@ -68,7 +72,11 @@ export const getOnePost = async (commentId) => {
                 orderBy: {
                     likes: 'desc',
                 },
+                include: {
+                    author: true,
+                },
             },
+            author: true,
         },
     });
     return onePost;

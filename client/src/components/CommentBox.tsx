@@ -1,13 +1,11 @@
 import { Comment } from '../types/types';
-import formatDate from '../utilities/dateFormatter';
+import DateComponent from './Date';
 
 type CommentProp = {
 	elem: Comment;
 };
 
 export default function CommentBox({ elem }: CommentProp) {
-	const date = formatDate(elem.createdAt);
-
 	return (
 		<>
 			<article className="border border-blue-200">
@@ -16,7 +14,12 @@ export default function CommentBox({ elem }: CommentProp) {
 				<p>
 					{elem.likes} | {elem.dislikes}
 				</p>
-				<p>{date}</p>
+				<div>
+					<DateComponent
+						createdAt={elem.createdAt}
+						updatedAt={elem.updatedAt}
+					/>
+				</div>
 			</article>
 		</>
 	);

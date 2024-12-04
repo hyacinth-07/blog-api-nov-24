@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 // MAIN PAGE
 export const mainPage = async (req, res) => {
     const posts = await dbFunctions.getAllPosts();
-    res.send(posts);
+    res.json(posts);
 };
 // SINGLE ARTICLE PAGE
 export const onePostPage = async (req, res) => {
