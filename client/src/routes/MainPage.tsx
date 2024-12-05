@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Post } from '../types/types';
-import PostItem from '../components/PostAndComments';
+import PostItem from '../components/PostBox';
 
 export default function MainPage() {
 	const [data, setData] = useState<Array<Post> | null>(null);

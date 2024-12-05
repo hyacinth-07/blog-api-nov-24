@@ -1,6 +1,7 @@
 import { Post } from '../types/types';
-import CommentBox from './CommentBox';
 import DateComponent from './Date';
+import CommentBox from './CommentBox';
+import { useState } from 'react';
 
 type PostProp = {
 	elem: Post;
@@ -8,6 +9,31 @@ type PostProp = {
 
 export default function PostItem({ elem }: PostProp) {
 	const comments = elem.comments.map((c) => <CommentBox elem={c} />);
+
+	function Accordion() {
+		const [accordionOpen, setAccordionOpen] = useState<boolean>(false);
+
+		return (
+			<>
+				<section className="flex w-full justify-end gap-4 p-2">
+					<span>Number of comments</span>{' '}
+					<button onClick={() => setAccordionOpen(!accordionOpen)}>
+						Expand
+					</button>
+				</section>
+
+				<div
+					className={`grid overflow-hidden transition-all duration-1000 ease-in-out ${
+						accordionOpen
+							? 'grid-rows-[1fr] opacity-100'
+							: 'grid-rows-[0fr] opacity-0'
+					}`}
+				>
+					<div className="overflow-hidden">{accordionOpen && comments}</div>
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<>
@@ -23,12 +49,7 @@ export default function PostItem({ elem }: PostProp) {
 						updatedAt={elem.updatedAt}
 					/>
 				</div>
-				<div className="flex flex-col">
-					<p className="self-end p-4">
-						button that hide/shows comments, a counter, then add
-					</p>
-					{comments}
-				</div>
+				<Accordion />
 			</article>
 		</>
 	);

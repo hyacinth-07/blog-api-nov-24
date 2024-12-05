@@ -6,7 +6,7 @@ import Header from '../components/Header';
 export default function Root() {
 	return (
 		<>
-			<div className="w-screen bg-brown-200 pt-8 pb-8 flex flex-col justify-between items-center">
+			<div className="w-screen min-h-screen bg-brown-200 pt-8 pb-8 flex flex-col justify-between items-center">
 				<div>
 					<Header />
 					<main className="w-[1200px] grid grid-cols-[900px_300px] gap-3">
