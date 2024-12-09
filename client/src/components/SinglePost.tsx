@@ -27,7 +27,7 @@ export default function SinglePost({ elem }: PostProp) {
 						<p>Go Back</p>
 					</NavLink>
 				</section>
-				{comments}
+				<section>{comments}</section>
 			</article>
 		</>
 	);

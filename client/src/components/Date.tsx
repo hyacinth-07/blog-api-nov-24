@@ -27,14 +27,14 @@ export default function DateComponent(
 		const stringDate = created.toLocaleString('en-US', options);
 		return (
 			<>
-				<p>{`First posted on ${stringDate}`}</p>
+				<span>{`first posted on ${stringDate}`}</span>
 			</>
 		);
 	} else {
 		const stringDate = updated.toLocaleString('en-US', options);
 		return (
 			<>
-				<p>{`Updated on ${stringDate}`}</p>
+				<span>{`updated on ${stringDate}`}</span>
 			</>
 		);
 	}
