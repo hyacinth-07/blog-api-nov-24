@@ -2,7 +2,7 @@ import { Comment } from '../types/types';
 import CommentBox from './CommentBox';
 import { useState } from 'react';
 
-export default function AccordionComponent(elem) {
+export default function CommentAccordion(elem) {
 	const [accordionOpen, setAccordionOpen] = useState<boolean>(false);
 
 	const comments = elem.elem.map((c: Comment) => <CommentBox elem={c} />);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Post } from '../types/types';
-import PostItem from '../components/PostBox';
+import PostBox from '../components/PostBox';
 
 export default function MainPage() {
 	const [data, setData] = useState<Array<Post> | null>(null);
@@ -21,7 +21,7 @@ export default function MainPage() {
 		return <div>loading....</div>;
 	}
 
-	const posts = data.map((elem) => <PostItem elem={elem} />);
+	const posts = data.map((elem) => <PostBox elem={elem} />);
 
 	return (
 		<>

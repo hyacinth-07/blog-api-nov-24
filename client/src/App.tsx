@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 // ROUTES
 import MainPage from './routes/MainPage';
 import Root from './routes/Root';
+import OneArticle from './routes/OneArticlePage';
 
 const App: React.FC = () => {
 	return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
 				<Routes>
 					<Route path="/" element={<Root />}>
 						<Route index element={<MainPage />} />
+						<Route path="/:postId" element={<OneArticle />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
