@@ -13,14 +13,14 @@ import * as utils from '../controllers/utilities.js';
 router.get('/', utils.logUser, blog.mainPage);
 
 // INDIVIDUAL POST PAGE
-router.get('/:postId', blog.onePostPage);
+router.get('/:postId', utils.logUser, blog.onePostPage);
 
 // POST COMMENTS
 
 ///// USER PAGES
 
 // USER HOME
-router.get('/user/:userId', blog.userHomePage);
+router.get('/user/:userId', utils.logUser, blog.userHomePage);
 
 ///// AUTH /////
 

@@ -22,11 +22,16 @@ export type Comment = {
 	author: User;
 };
 
-type User = {
+export type User = {
 	id: string;
 	name: string;
 	email: string;
 	password: string;
 	createdAt: string | Date;
 	isAuthor: boolean;
+};
+
+export type Login = {
+	username: string;
+	password: string;
 };

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import MainPage from './routes/MainPage';
 import Root from './routes/Root';
 import OneArticle from './routes/OneArticlePage';
+import LoginPage from './routes/LoginPage';
 
 const App: React.FC = () => {
 	return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
 				<Routes>
 					<Route path="/" element={<Root />}>
 						<Route index element={<MainPage />} />
+						<Route path="/login" element={<LoginPage />} />
 						<Route path="/:postId" element={<OneArticle />} />
 					</Route>
 				</Routes>
