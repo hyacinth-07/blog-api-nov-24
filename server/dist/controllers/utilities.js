@@ -5,5 +5,5 @@ export const logUser = async (req, res, next) => {
         return;
     }
     console.log(req.user);
-    next();
+    res.json(req.user);
 };

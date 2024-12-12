@@ -18,8 +18,9 @@ export default function LoginPage() {
 		try {
 			const response = await fetch('http://localhost:3000/auth/login/', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(body),
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
 			});
 
 			if (response.ok) {
@@ -27,11 +28,31 @@ export default function LoginPage() {
 				console.log(data);
 				navigate('/');
 			} else {
-				const error = await response.json();
-				console.log(error);
+				try {
+					const error = await response.json();
+					console.log(error);
+				} catch {
+					console.log('Unexpected error', response.statusText);
+				}
 			}
 		} catch (error) {
 			console.error(error);
+		}
+	};
+
+	const handleGet = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await fetch('http://localhost:3000/auth/login/', {
+				method: 'GET',
+			});
+
+			if (response.ok) {
+				console.log('can you read me?');
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
@@ -55,6 +76,10 @@ export default function LoginPage() {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<button type="submit">Log In</button>
+			</form>
+
+			<form onSubmit={handleGet}>
+				<button type="submit">test get</button>
 			</form>
 		</>
 	);

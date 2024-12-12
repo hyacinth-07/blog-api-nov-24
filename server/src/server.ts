@@ -5,9 +5,9 @@ app.use(express.json());
 
 // CORS
 import cors from 'cors';
-const corsOptions = { origin: ['http://localhost:5173/'] };
+const allowedOrigins = ['http://localhost:5173', '127.0.0.1:5173'];
 
-app.use(cors());
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // .ENV
 import 'dotenv/config';
@@ -72,7 +72,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // app.use(passport.session());
 
-// login
+// // login
 
 // passport.use(
 // 	new LocalStrategy(async (username, password, done) => {
@@ -113,17 +113,17 @@ app.use(express.urlencoded({ extended: false }));
 // 	}
 // );
 
-// authenticate, login and logout
+// // authenticate, login and logout
 
 // app.post(
 // 	'/api/login',
 // 	passport.authenticate('local', {
 // 		successRedirect: '/api',
-// 		failureRedirect: '/api/login',
+// 		// failureRedirect: '/api/login',
 // 	})
 // );
 
-import { Request, Response, NextFunction } from 'express';
+// import { Request, Response, NextFunction } from 'express';
 
 // app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
 // 	req.logout((err) => {

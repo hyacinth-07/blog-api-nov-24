@@ -4,14 +4,14 @@ import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
 
 router.get('/login', (req, res) => {
-	res.send('Can you see this');
+	res.json('Can you see this');
 });
 
 router.post(
 	'/login',
 	passport.authenticate('local', {
 		successRedirect: '/api/',
-		failureRedirect: '/auth/login',
+		// failureRedirect: '/auth/login',
 	})
 );
 
