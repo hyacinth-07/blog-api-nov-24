@@ -10,17 +10,17 @@ import * as utils from '../controllers/utilities.js';
 ///// NAVIGATION
 
 // MAIN PAGE
-router.get('/', utils.logUser, blog.mainPage);
+router.get('/', blog.mainPage);
 
 // INDIVIDUAL POST PAGE
-router.get('/:postId', utils.logUser, blog.onePostPage);
+router.get('/:postId', blog.onePostPage);
 
 // POST COMMENTS
 
 ///// USER PAGES
 
 // USER HOME
-router.get('/user/:userId', utils.logUser, blog.userHomePage);
+router.get('/user/:userId', blog.userHomePage);
 
 ///// AUTH /////
 

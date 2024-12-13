@@ -11,6 +11,7 @@ export default function LoginPage() {
 	const [password, setPassword] = useState<string>('');
 
 	const navigate = useNavigate();
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const body: Login = { username: userName, password: password };
@@ -18,14 +19,14 @@ export default function LoginPage() {
 		try {
 			const response = await fetch('http://localhost:3000/auth/login/', {
 				method: 'POST',
-				body: JSON.stringify(body),
-				headers: { 'Content-Type': 'application/json' },
 				credentials: 'include',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
 			});
 
 			if (response.ok) {
-				const data = await response.json();
-				console.log(data);
+				// const data = await response.json();
+				// console.log(data);
 				navigate('/');
 			} else {
 				try {
@@ -37,22 +38,6 @@ export default function LoginPage() {
 			}
 		} catch (error) {
 			console.error(error);
-		}
-	};
-
-	const handleGet = async (e) => {
-		e.preventDefault();
-
-		try {
-			const response = await fetch('http://localhost:3000/auth/login/', {
-				method: 'GET',
-			});
-
-			if (response.ok) {
-				console.log('can you read me?');
-			}
-		} catch (err) {
-			console.log(err);
 		}
 	};
 
@@ -76,10 +61,6 @@ export default function LoginPage() {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<button type="submit">Log In</button>
-			</form>
-
-			<form onSubmit={handleGet}>
-				<button type="submit">test get</button>
 			</form>
 		</>
 	);

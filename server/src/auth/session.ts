@@ -7,6 +7,9 @@ const secret = process.env.SESSION_SECRET as string;
 const sessionMiddleware = session({
 	cookie: {
 		maxAge: 2 * 60 * 60 * 1000, // ms, two hours
+		httpOnly: true,
+		secure: false,
+		sameSite: 'lax',
 	},
 	secret: secret,
 	resave: true,

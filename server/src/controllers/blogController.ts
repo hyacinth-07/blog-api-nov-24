@@ -3,11 +3,26 @@ import * as dbFunctions from '../prisma/dbFunctions.js';
 import { body, validationResult } from 'express-validator';
 import * as types from '../types/types.js';
 import bcrypt from 'bcryptjs';
+import { authenticate } from 'passport';
 
 // MAIN PAGE
 
 export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	const posts = await dbFunctions.getAllPosts();
+	let user = {};
+
+	// try this one
+
+	if (req.user) {
+		user = { authenticated: true, user: req.user };
+	} else {
+		user = { authenticated: false };
+	}
+
+	//
+
+	console.log(user);
+
 	res.json(posts);
 };
 

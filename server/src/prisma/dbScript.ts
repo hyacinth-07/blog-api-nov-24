@@ -88,6 +88,12 @@ const newUsers: Array<types.User> = [
 		password: 'wonderWoman987',
 		isAuthor: false,
 	},
+	{
+		name: 'test',
+		email: 'test.test@test.test',
+		password: 'test',
+		isAuthor: false,
+	},
 ];
 
 const newPosts: Array<types.Post> = [

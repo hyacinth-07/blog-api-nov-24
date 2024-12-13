@@ -6,9 +6,7 @@ export default function MainPage() {
 	const [data, setData] = useState<Array<Post> | null>(null);
 
 	useEffect(() => {
-		fetch('http://localhost:3000/api/', {
-			// credentials: 'include',
-		})
+		fetch('http://localhost:3000/api/', {})
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
@@ -23,7 +21,7 @@ export default function MainPage() {
 		return <div>loading....</div>;
 	}
 
-	const posts = data.map((elem) => <PostBox elem={elem} />);
+	const posts = data.map((elem: Post) => <PostBox elem={elem} />);
 
 	return (
 		<>
