@@ -1,29 +1,15 @@
-import express, { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as dbFunctions from '../prisma/dbFunctions.js';
 import { body, validationResult } from 'express-validator';
 import * as types from '../types/types.js';
-import bcrypt from 'bcryptjs';
-import { authenticate } from 'passport';
 
 // MAIN PAGE
 
 export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	const posts = await dbFunctions.getAllPosts();
-	let user = {};
+	const user = req.user;
 
-	// try this one
-
-	if (req.user) {
-		user = { authenticated: true, user: req.user };
-	} else {
-		user = { authenticated: false };
-	}
-
-	//
-
-	console.log(user);
-
-	res.json(posts);
+	res.json([user, posts]);
 };
 
 // SINGLE ARTICLE PAGE
@@ -103,18 +89,4 @@ export const userSignUp = async (
 			return next(e);
 		}
 	}
-};
-
-// LOG OUT
-// not currently in use
-
-export const logOut = async (
-	req: Request,
-	res: Response,
-	next: NextFunction
-) => {
-	req.logout((err) => {
-		if (err) return next(err);
-		res.redirect('/');
-	});
 };

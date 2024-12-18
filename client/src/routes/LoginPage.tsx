@@ -25,8 +25,6 @@ export default function LoginPage() {
 			});
 
 			if (response.ok) {
-				// const data = await response.json();
-				// console.log(data);
 				navigate('/');
 			} else {
 				try {
@@ -35,6 +33,24 @@ export default function LoginPage() {
 				} catch {
 					console.log('Unexpected error', response.statusText);
 				}
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const handleLogout = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await fetch('http://localhost:3000/auth/logout/', {
+				credentials: 'include',
+			});
+			if (response.ok) {
+				navigate('/');
+			} else {
+				const error = await response.json();
+				console.log(error);
 			}
 		} catch (error) {
 			console.error(error);
@@ -61,6 +77,10 @@ export default function LoginPage() {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<button type="submit">Log In</button>
+			</form>
+
+			<form onSubmit={handleLogout}>
+				<button type="submit">Logout</button>
 			</form>
 		</>
 	);

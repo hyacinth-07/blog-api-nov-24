@@ -32,15 +32,6 @@ main()
 
 ///// AUTH /////
 
-import session from 'express-session';
-import { PrismaSessionStore } from '@quixo3/prisma-session-store';
-// import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-const secret = process.env.SESSION_SECRET as string;
-import * as auth from './auth/auth.js';
-
-// NEW IMPORTS ------
-
 import sessionMiddleware from './auth/session.js';
 import passport from './auth/passport.js';
 import authRoutes from './auth/routes.js';
@@ -54,85 +45,17 @@ app.use('/auth', authRoutes);
 
 app.use(express.urlencoded({ extended: false }));
 
-// app.use(
-// 	session({
-// 		cookie: {
-// 			maxAge: 2 * 60 * 60 * 1000, // ms, two hours
-// 		},
-// 		secret: secret,
-// 		resave: true,
-// 		saveUninitialized: true,
-// 		store: new PrismaSessionStore(new PrismaClient(), {
-// 			checkPeriod: 2 * 60 * 1000, //ms
-// 			dbRecordIdIsSessionId: true,
-// 			dbRecordIdFunction: undefined,
-// 		}),
-// 	})
-// );
+///// ROUTES
 
-// app.use(passport.session());
+// debugging
 
-// // login
-
-// passport.use(
-// 	new LocalStrategy(async (username, password, done) => {
-// 		try {
-// 			auth.loginUser(username, password, done);
-// 		} catch (e) {
-// 			return done(e);
-// 		}
-// 	})
-// );
-
-// // serialize/deserialize
-
-// import * as types from './types/types.js';
-
-// passport.serializeUser(
-// 	(user: types.UserLogin, done: (err: any, id?: unknown) => void) => {
-// 		done(null, user.id);
-// 	}
-// );
-
-// passport.deserializeUser(
-// 	async (id: string, done: (err: any, user?: types.User | false) => void) => {
-// 		try {
-// 			const rows = await prisma.user.findUnique({
-// 				where: { id: id },
-// 			});
-// 			const user = rows;
-
-// 			if (user) {
-// 				done(null, user);
-// 			} else {
-// 				done(null, false);
-// 			}
-// 		} catch (err) {
-// 			done(err);
-// 		}
-// 	}
-// );
-
-// // authenticate, login and logout
-
-// app.post(
-// 	'/api/login',
-// 	passport.authenticate('local', {
-// 		successRedirect: '/api',
-// 		// failureRedirect: '/api/login',
-// 	})
-// );
-
-// import { Request, Response, NextFunction } from 'express';
-
-// app.get('/api/logout', (req: Request, res: Response, next: NextFunction) => {
-// 	req.logout((err) => {
-// 		if (err) return next(err);
-// 		res.redirect('/api');
-// 	});
+// app.use((req, res, next) => {
+// 	console.log('Session:', req.session);
+// 	console.log('User:', req.user);
+// 	next();
 // });
 
-///// ROUTES
+///
 
 import blogRoutes from './routes/blogRoutes.js';
 app.use('/api', blogRoutes);
