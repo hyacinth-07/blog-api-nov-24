@@ -7,9 +7,14 @@ import * as types from '../types/types.js';
 
 export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	const posts = await dbFunctions.getAllPosts();
-	const user = req.user;
-
 	res.json(posts);
+};
+
+// CHECK IF USER LOGGED IN
+
+export const checkUser = async (req: Request, res: Response): Promise<void> => {
+	const user = req.user;
+	res.json(user);
 };
 
 // SINGLE ARTICLE PAGE

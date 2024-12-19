@@ -12,6 +12,9 @@ import * as utils from '../controllers/utilities.js';
 // MAIN PAGE
 router.get('/', blog.mainPage);
 
+// CHECK USER
+router.get('/userCheck', blog.checkUser);
+
 // INDIVIDUAL POST PAGE
 router.get('/:postId', blog.onePostPage);
 
