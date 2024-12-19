@@ -9,7 +9,7 @@ export const mainPage = async (req: Request, res: Response): Promise<void> => {
 	const posts = await dbFunctions.getAllPosts();
 	const user = req.user;
 
-	res.json([user, posts]);
+	res.json(posts);
 };
 
 // SINGLE ARTICLE PAGE

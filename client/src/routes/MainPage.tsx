@@ -9,24 +9,17 @@ export default function MainPage() {
 
 	useEffect(() => {
 		try {
-			fetchGet('http://localhost:3000/api/').then((data) => setData(data));
+			fetchGet<Array<Post> | null>('http://localhost:3000/api/').then((data) =>
+				setData(data)
+			);
 		} catch (error) {
 			throw new Error(`Error fetching data: ${error}`);
 		}
 	}, []);
 
 	if (!data) return <LoadingScreen />;
-	// crude verification
-	const u = data[0];
 
-	if (u) {
-		console.log(u.name);
-	} else {
-		console.log('no user');
-	}
-
-	const p = data[1];
-	const posts = p.map((elem: Post) => <PostBox elem={elem} />);
+	const posts = data.map((elem: Post) => <PostBox elem={elem} key={elem.id} />);
 
 	return (
 		<>

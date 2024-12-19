@@ -5,7 +5,9 @@ import { useState } from 'react';
 export default function CommentAccordion(elem) {
 	const [accordionOpen, setAccordionOpen] = useState<boolean>(false);
 
-	const comments = elem.elem.map((c: Comment) => <CommentBox elem={c} />);
+	const comments = elem.elem.map((c: Comment) => (
+		<CommentBox elem={c} key={c.id} />
+	));
 	const numberOfComments = elem.elem.length;
 
 	return (
