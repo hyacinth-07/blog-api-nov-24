@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Post } from '../types/types';
 import PostBox from '../components/PostBox';
+import LoadingScreen from '../components/LoadingScreen';
 import { fetchGet } from '../utilities/fetching';
 
 export default function MainPage() {
@@ -14,10 +15,7 @@ export default function MainPage() {
 		}
 	}, []);
 
-	if (!data) {
-		return <div>loading....</div>;
-	}
-
+	if (!data) return <LoadingScreen />;
 	// crude verification
 	const u = data[0];
 
