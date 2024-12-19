@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Post } from '../types/types';
 import PostBox from '../components/PostBox';
+import { fetchGet } from '../utilities/fetching';
 
 export default function MainPage() {
-	// const [data, setData] = useState<Array<Post> | null>(null);
-	const [data, setData] = useState(null);
+	const [data, setData] = useState<Array<Post> | null>(null);
 
 	useEffect(() => {
-		fetch('http://localhost:3000/api/', { credentials: 'include' })
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				return response.json();
-			})
-			.then((data) => setData(data))
-			.catch((error) => console.error('Fetch error:', error));
+		try {
+			fetchGet('http://localhost:3000/api/').then((data) => setData(data));
+		} catch (error) {
+			throw new Error(`Error fetching data: ${error}`);
+		}
 	}, []);
 
 	if (!data) {
