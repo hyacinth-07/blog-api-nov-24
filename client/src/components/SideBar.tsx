@@ -3,14 +3,14 @@ import { UserContext } from '../context/UserContextDefinition';
 import { useContext } from 'react';
 
 export default function SideBar() {
-	const isLogged = useContext(UserContext);
+	const { user } = useContext(UserContext);
 
 	return (
 		<>
 			<nav className="flex flex-col items-center justify-evenly gap-5 mt-4 bg-brown-500 rounded-lg h-[250px]">
-				{isLogged ? <p>Welcome, {isLogged.name}</p> : <p>Welcome, guest</p>}
+				{user ? <p>Welcome, {user.name}</p> : <p>Welcome, guest</p>}
 
-				{isLogged ? (
+				{user ? (
 					<NavLink to="/logout">
 						<p>Logout</p>
 					</NavLink>

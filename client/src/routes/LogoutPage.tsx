@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContextDefinition';
 
 export default function LogOutPage() {
 	const navigate = useNavigate();
+	const { refreshUser } = useContext(UserContext);
 
 	const handleLogout = async (e) => {
 		e.preventDefault();
@@ -10,11 +13,17 @@ export default function LogOutPage() {
 			const response = await fetch('http://localhost:3000/auth/logout/', {
 				credentials: 'include',
 			});
+
 			if (response.ok) {
+				refreshUser();
 				navigate('/');
 			} else {
-				const error = await response.json();
-				console.log(error);
+				try {
+					const error = await response.json();
+					console.log(error);
+				} catch {
+					console.log('Unexpected error', response.statusText);
+				}
 			}
 		} catch (error) {
 			console.error(error);

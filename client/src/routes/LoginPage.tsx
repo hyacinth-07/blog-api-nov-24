@@ -1,16 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Login } from '../types/types';
 import { useNavigate } from 'react-router';
+import { UserContext } from '../context/UserContextDefinition';
 
 export default function LoginPage() {
-	// for testing purposes
-	// Alice Johnson
-	// password123
-
 	const [userName, setUserName] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
 	const navigate = useNavigate();
+	const { refreshUser } = useContext(UserContext);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -25,6 +23,7 @@ export default function LoginPage() {
 			});
 
 			if (response.ok) {
+				refreshUser();
 				navigate('/');
 			} else {
 				try {

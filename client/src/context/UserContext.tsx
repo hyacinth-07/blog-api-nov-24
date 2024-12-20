@@ -9,7 +9,7 @@ type UserProviderProps = { children: React.ReactNode };
 export const UserProvider = ({ children }: UserProviderProps) => {
 	const [user, setUser] = useState<LoggedUser>(undefined);
 
-	useEffect(() => {
+	const refreshUser = () => {
 		try {
 			fetchGet<User | undefined>('http://localhost:3000/api/userCheck').then(
 				(user) => setUser(user)
@@ -17,7 +17,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 		} catch (error) {
 			throw new Error(`Error fetching user: ${error}`);
 		}
+	};
+
+	useEffect(() => {
+		refreshUser();
 	}, []);
 
-	return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+	return (
+		<UserContext.Provider value={{ user, refreshUser }}>
+			{children}
+		</UserContext.Provider>
+	);
 };
