@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router';
-import { User } from '../types/types';
+import { UserContext } from '../context/UserContextDefinition';
+import { useContext } from 'react';
 
-type SideBarProp = {
-	isLogged: User | undefined;
-};
+export default function SideBar() {
+	const isLogged = useContext(UserContext);
 
-export default function SideBar({ isLogged }: SideBarProp) {
 	return (
 		<>
 			<nav className="flex flex-col items-center justify-evenly gap-5 mt-4 bg-brown-500 rounded-lg h-[250px]">
