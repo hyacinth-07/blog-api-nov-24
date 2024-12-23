@@ -104,6 +104,7 @@ export const likeComment = async (
 	userId: string,
 	commentId: string
 ): Promise<void> => {
+	// create the like between user and comment
 	await prisma.likedComments.create({
 		data: {
 			userId: userId,
@@ -111,6 +112,7 @@ export const likeComment = async (
 		},
 	});
 
+	// add to like count
 	await prisma.comment.update({
 		where: {
 			id: commentId,
@@ -122,3 +124,24 @@ export const likeComment = async (
 };
 
 // DISLIKE ONE COMMENT
+
+export const dislikeComment = async (
+	userId: string,
+	commentId: string
+): Promise<void> => {
+	await prisma.dislikedComments.create({
+		data: {
+			userId: userId,
+			commentId: commentId,
+		},
+	});
+
+	await prisma.comment.update({
+		where: {
+			id: commentId,
+		},
+		data: {
+			dislikes: { increment: 1 },
+		},
+	});
+};

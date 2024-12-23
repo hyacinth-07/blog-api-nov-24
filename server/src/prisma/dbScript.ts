@@ -8,6 +8,7 @@ import * as types from '../types/types.js';
 
 // 1. clean the db
 async function clearDb(): Promise<void> {
+	await prisma.dislikedComments.deleteMany();
 	await prisma.likedComments.deleteMany();
 	await prisma.comment.deleteMany();
 	await prisma.post.deleteMany();
@@ -80,6 +81,28 @@ async function scriptLikes(): Promise<void> {
 		dbFunctions.likeComment(userId, commentId);
 		console.log(
 			`User "${users[randomUser].name}" likes "${comments[
+				randomComment
+			].body.substring(0, 20)} ..."`
+		);
+	}
+}
+
+// 6. add dislikes
+async function scriptDislikes(): Promise<void> {
+	const users = await prisma.user.findMany();
+	const comments = await prisma.comment.findMany();
+
+	for (let i = 0; i < 5; i++) {
+		// get random user
+		const randomUser = Math.floor(Math.random() * users.length);
+		const userId = users[randomUser].id;
+		// get random comment
+		const randomComment = Math.floor(Math.random() * comments.length);
+		const commentId = comments[randomComment].id;
+		// link the two
+		dbFunctions.dislikeComment(userId, commentId);
+		console.log(
+			`User "${users[randomUser].name}" disliked "${comments[
 				randomComment
 			].body.substring(0, 20)} ..."`
 		);
@@ -211,6 +234,8 @@ async function main() {
 	await scriptComments();
 	await delay(500);
 	await scriptLikes();
+	await delay(500);
+	await scriptDislikes();
 	console.log('--- Database reset successful ---');
 }
 
