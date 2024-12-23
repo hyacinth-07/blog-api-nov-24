@@ -22,18 +22,19 @@ model Session {
 }
 
 model User {
-  id        String    @unique @default(uuid())
-  name      String    @unique
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  isAuthor  Boolean   @default(false)
-  posts     Post[]    @relation("authoredPosts")
-  comments  Comment[] @relation("authoredComments")
+  id            String          @id @unique @default(uuid())
+  name          String          @unique
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  isAuthor      Boolean         @default(false)
+  posts         Post[]          @relation("authoredPosts")
+  comments      Comment[]       @relation("authoredComments")
+  likedComments LikedComments[]
 }
 
 model Post {
-  id          String    @unique @default(uuid())
+  id          String    @id @unique @default(uuid())
   title       String
   body        String
   author      User      @relation("authoredPosts", fields: [authorId], references: [id])
@@ -45,14 +46,25 @@ model Post {
 }
 
 model Comment {
-  id            String   @unique @default(uuid())
+  id            String          @id @unique @default(uuid())
   body          String
-  author        User     @relation("authoredComments", fields: [authorId], references: [id])
+  author        User            @relation("authoredComments", fields: [authorId], references: [id])
   authorId      String
-  postComment   Post     @relation("postComments", fields: [postCommentId], references: [id])
+  postComment   Post            @relation("postComments", fields: [postCommentId], references: [id])
   postCommentId String
-  likes         Int      @default(0)
-  dislikes      Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  likedBy       LikedComments[]
+  likes         Int             @default(0)
+  dislikes      Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model LikedComments {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String
+  likedAt   DateTime @default(now())
+
+  @@id([userId, commentId])
 }
