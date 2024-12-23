@@ -97,3 +97,28 @@ export const getOnePost = async (
 
 	return onePost;
 };
+
+// LIKE ONE COMMENT
+
+export const likeComment = async (
+	userId: string,
+	commentId: string
+): Promise<void> => {
+	await prisma.likedComments.create({
+		data: {
+			userId: userId,
+			commentId: commentId,
+		},
+	});
+
+	await prisma.comment.update({
+		where: {
+			id: commentId,
+		},
+		data: {
+			likes: { increment: 1 },
+		},
+	});
+};
+
+// DISLIKE ONE COMMENT

@@ -8,6 +8,7 @@ import * as types from '../types/types.js';
 
 // 1. clean the db
 async function clearDb(): Promise<void> {
+	await prisma.likedComments.deleteMany();
 	await prisma.comment.deleteMany();
 	await prisma.post.deleteMany();
 	await prisma.user.deleteMany();
@@ -61,6 +62,28 @@ async function scriptComments(): Promise<void> {
 		dbFunctions.addComment(elem);
 		console.log(`Created comment: ${elem.body.substring(0, 20)} ...`);
 	});
+}
+
+// 5. add likes
+async function scriptLikes(): Promise<void> {
+	const users = await prisma.user.findMany();
+	const comments = await prisma.comment.findMany();
+
+	for (let i = 0; i < 10; i++) {
+		// get random user
+		const randomUser = Math.floor(Math.random() * users.length);
+		const userId = users[randomUser].id;
+		// get random comment
+		const randomComment = Math.floor(Math.random() * comments.length);
+		const commentId = comments[randomComment].id;
+		// link the two
+		dbFunctions.likeComment(userId, commentId);
+		console.log(
+			`User "${users[randomUser].name}" likes "${comments[
+				randomComment
+			].body.substring(0, 20)} ..."`
+		);
+	}
 }
 
 const newUsers: Array<types.User> = [
@@ -186,6 +209,8 @@ async function main() {
 	await scriptPosts();
 	await delay(500);
 	await scriptComments();
+	await delay(500);
+	await scriptLikes();
 	console.log('--- Database reset successful ---');
 }
 
