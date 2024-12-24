@@ -68,6 +68,8 @@ model LikedComments {
   comment   Comment  @relation(fields: [commentId], references: [id])
   commentId String
   likedAt   DateTime @default(now())
+
+  @@unique([userId, commentId])
 }
 
 model DislikedComments {
@@ -77,4 +79,6 @@ model DislikedComments {
   comment   Comment  @relation(fields: [commentId], references: [id])
   commentId String
   likedAt   DateTime @default(now())
+
+  @@unique([userId, commentId])
 }

@@ -43,7 +43,7 @@ async function scriptPosts(): Promise<void> {
 
 // by adding half a second of delay, the db has time to update and return
 // more requests. Not very elegant, but it works.
-function delay(ms: number): Promise<void> {
+export function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -66,11 +66,11 @@ async function scriptComments(): Promise<void> {
 }
 
 // 5. add likes
-async function scriptLikes(): Promise<void> {
+async function scriptLikes(howMany: number): Promise<void> {
 	const users = await prisma.user.findMany();
 	const comments = await prisma.comment.findMany();
 
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < howMany; i++) {
 		// get random user
 		const randomUser = Math.floor(Math.random() * users.length);
 		const userId = users[randomUser].id;
@@ -78,21 +78,22 @@ async function scriptLikes(): Promise<void> {
 		const randomComment = Math.floor(Math.random() * comments.length);
 		const commentId = comments[randomComment].id;
 		// link the two
-		dbFunctions.likeComment(userId, commentId);
-		console.log(
-			`User "${users[randomUser].name}" likes "${comments[
-				randomComment
-			].body.substring(0, 20)} ..."`
-		);
+		await dbFunctions.likeComment(userId, commentId).then(() => {
+			console.log(
+				`User "${users[randomUser].name}" likes "${comments[
+					randomComment
+				].body.substring(0, 20)} ..."`
+			);
+		});
 	}
 }
 
 // 6. add dislikes
-async function scriptDislikes(): Promise<void> {
+async function scriptDislikes(howMany: number): Promise<void> {
 	const users = await prisma.user.findMany();
 	const comments = await prisma.comment.findMany();
 
-	for (let i = 0; i < 5; i++) {
+	for (let i = 0; i < howMany; i++) {
 		// get random user
 		const randomUser = Math.floor(Math.random() * users.length);
 		const userId = users[randomUser].id;
@@ -100,12 +101,13 @@ async function scriptDislikes(): Promise<void> {
 		const randomComment = Math.floor(Math.random() * comments.length);
 		const commentId = comments[randomComment].id;
 		// link the two
-		dbFunctions.dislikeComment(userId, commentId);
-		console.log(
-			`User "${users[randomUser].name}" disliked "${comments[
-				randomComment
-			].body.substring(0, 20)} ..."`
-		);
+		await dbFunctions.dislikeComment(userId, commentId).then(() => {
+			console.log(
+				`User "${users[randomUser].name}" disliked "${comments[
+					randomComment
+				].body.substring(0, 20)} ..."`
+			);
+		});
 	}
 }
 
@@ -233,9 +235,9 @@ async function main() {
 	await delay(500);
 	await scriptComments();
 	await delay(500);
-	await scriptLikes();
+	await scriptLikes(100);
 	await delay(500);
-	await scriptDislikes();
+	await scriptDislikes(70);
 	console.log('--- Database reset successful ---');
 }
 

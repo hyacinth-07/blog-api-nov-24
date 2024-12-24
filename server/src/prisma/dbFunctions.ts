@@ -104,21 +104,70 @@ export const likeComment = async (
 	userId: string,
 	commentId: string
 ): Promise<void> => {
-	// create the like between user and comment
-	await prisma.likedComments.create({
-		data: {
-			userId: userId,
-			commentId: commentId,
+	// check if user already liked the comment
+	const previousLike = await prisma.likedComments.findUnique({
+		where: {
+			userId_commentId: {
+				userId: userId,
+				commentId: commentId,
+			},
 		},
 	});
 
-	// add to like count
+	if (!previousLike) {
+		// check if user already disliked the comment
+		const previousDislike = await prisma.dislikedComments.findUnique({
+			where: {
+				userId_commentId: {
+					userId: userId,
+					commentId: commentId,
+				},
+			},
+		});
+
+		if (previousDislike) removeLike(userId, commentId);
+
+		// create the like between user and comment
+		await prisma.likedComments.create({
+			data: {
+				userId: userId,
+				commentId: commentId,
+			},
+		});
+
+		// add to like count
+		await prisma.comment.update({
+			where: {
+				id: commentId,
+			},
+			data: {
+				likes: { increment: 1 },
+			},
+		});
+	}
+};
+
+// REMOVE LIKE
+
+export const removeLike = async (
+	userId: string,
+	commentId: string
+): Promise<void> => {
+	await prisma.likedComments.delete({
+		where: {
+			userId_commentId: {
+				userId: userId,
+				commentId: commentId,
+			},
+		},
+	});
+
 	await prisma.comment.update({
 		where: {
 			id: commentId,
 		},
 		data: {
-			likes: { increment: 1 },
+			likes: { decrement: 1 },
 		},
 	});
 };
@@ -129,10 +178,59 @@ export const dislikeComment = async (
 	userId: string,
 	commentId: string
 ): Promise<void> => {
-	await prisma.dislikedComments.create({
-		data: {
-			userId: userId,
-			commentId: commentId,
+	// check if user already disliked the comment
+	const previousDislike = await prisma.dislikedComments.findUnique({
+		where: {
+			userId_commentId: {
+				userId: userId,
+				commentId: commentId,
+			},
+		},
+	});
+
+	if (!previousDislike) {
+		// check if user already liked the comment
+		const previousLike = await prisma.likedComments.findUnique({
+			where: {
+				userId_commentId: {
+					userId: userId,
+					commentId: commentId,
+				},
+			},
+		});
+
+		if (previousLike) await removeLike(userId, commentId);
+
+		await prisma.dislikedComments.create({
+			data: {
+				userId: userId,
+				commentId: commentId,
+			},
+		});
+
+		await prisma.comment.update({
+			where: {
+				id: commentId,
+			},
+			data: {
+				dislikes: { increment: 1 },
+			},
+		});
+	}
+};
+
+// REMOVE DISLIKE
+
+export const removeDislike = async (
+	userId: string,
+	commentId: string
+): Promise<void> => {
+	await prisma.dislikedComments.delete({
+		where: {
+			userId_commentId: {
+				userId: userId,
+				commentId: commentId,
+			},
 		},
 	});
 
@@ -141,7 +239,7 @@ export const dislikeComment = async (
 			id: commentId,
 		},
 		data: {
-			dislikes: { increment: 1 },
+			dislikes: { decrement: 1 },
 		},
 	});
 };
