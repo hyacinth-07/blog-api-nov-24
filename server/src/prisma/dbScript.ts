@@ -170,56 +170,56 @@ const newComments: Array<types.Comment> = [
 		body: 'This is such an insightful post! Thank you for sharing.',
 		authorId: 'user1',
 		postCommentId: '',
-		likes: 45,
-		dislikes: 2,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'I have a different perspective on this topic. Here’s my take...',
 		authorId: 'user2',
 		postCommentId: '',
-		likes: 12,
-		dislikes: 5,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'Amazing explanation, very clear and well-written!',
 		authorId: 'user3',
 		postCommentId: '',
-		likes: 34,
-		dislikes: 1,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'I found this post a bit confusing. Could you clarify?',
 		authorId: 'user4',
 		postCommentId: '',
-		likes: 8,
-		dislikes: 3,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'Great content! I’ll definitely share this with my team.',
 		authorId: 'user5',
 		postCommentId: '',
-		likes: 20,
+		likes: 0,
 		dislikes: 0,
 	},
 	{
 		body: 'I disagree with some points, but overall a good read.',
 		authorId: 'user6',
 		postCommentId: '',
-		likes: 15,
-		dislikes: 10,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'Wow, this is exactly what I was looking for! Thanks!',
 		authorId: 'user7',
 		postCommentId: '',
-		likes: 50,
-		dislikes: 4,
+		likes: 0,
+		dislikes: 0,
 	},
 	{
 		body: 'Could you provide more examples next time? Thanks!',
 		authorId: 'user8',
 		postCommentId: '',
-		likes: 5,
+		likes: 0,
 		dislikes: 0,
 	},
 ];
@@ -235,9 +235,9 @@ async function main() {
 	await delay(500);
 	await scriptComments();
 	await delay(500);
-	await scriptLikes(100);
+	await scriptLikes(10);
 	await delay(500);
-	await scriptDislikes(70);
+	await scriptDislikes(7);
 	console.log('--- Database reset successful ---');
 }
 
