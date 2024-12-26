@@ -95,3 +95,12 @@ export const userSignUp = async (
 		}
 	}
 };
+
+// LIKE COMMENTS
+
+export const likeComment = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	// await dbFunctions.likeComment();
+};

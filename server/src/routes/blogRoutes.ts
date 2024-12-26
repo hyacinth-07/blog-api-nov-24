@@ -20,6 +20,11 @@ router.get('/:postId', blog.onePostPage);
 
 // POST COMMENTS
 
+// LIKE COMMENT
+router.post('/:postId/:commentId', blog.likeComment);
+
+// DISLIKE COMMENT
+
 ///// USER PAGES
 
 // USER HOME
