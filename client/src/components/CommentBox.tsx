@@ -1,7 +1,9 @@
 import { Comment } from '../types/types';
 import DateComponent from './Date';
-import ThumbsUp from '../assets/thumbs-up-svgrepo-com.svg?react';
-import ThumbsDown from '../assets/thumb-down-svgrepo-com.svg?react';
+import ArrowUp from '../assets/arrowUp.svg?react';
+import ArrowDown from '../assets/arrowDown.svg?react';
+
+import { useState } from 'react';
 
 type CommentProp = {
 	elem: Comment;
@@ -11,6 +13,29 @@ export default function CommentBox({ elem }: CommentProp) {
 	const date = (
 		<DateComponent createdAt={elem.createdAt} updatedAt={elem.updatedAt} />
 	);
+
+	const [isLiked, setIsLiked] = useState<boolean>(false);
+	const [isDisliked, setIsDisliked] = useState<boolean>(false);
+
+	function handleLikes() {
+		if (isLiked === true) {
+			setIsLiked(false);
+		} else {
+			setIsLiked(true);
+
+			if (isDisliked === true) setIsDisliked(false);
+		}
+	}
+
+	function handleDislikes() {
+		if (isDisliked === true) {
+			setIsDisliked(false);
+		} else {
+			setIsDisliked(true);
+
+			if (isLiked === true) setIsLiked(false);
+		}
+	}
 
 	return (
 		<>
@@ -23,11 +48,19 @@ export default function CommentBox({ elem }: CommentProp) {
 				<p>{elem.body}</p>
 				<section className="self-end flex gap-3 min-h-8 *:items-center">
 					<span className="flex gap-3">
-						<ThumbsUp className="w-6 h-6" />
+						<ArrowUp
+							className={`w-6 h-6 ${isLiked ? 'fill-brown-950' : 'fill-none'}`}
+							onClick={handleLikes}
+						/>
 						{elem.likes}
 					</span>
 					<span className="flex gap-3">
-						<ThumbsDown className="w-6 h-6" />
+						<ArrowDown
+							className={`w-6 h-6 ${
+								isDisliked ? 'fill-brown-950' : 'fill-none'
+							}`}
+							onClick={handleDislikes}
+						/>
 						{elem.dislikes}
 					</span>
 				</section>
