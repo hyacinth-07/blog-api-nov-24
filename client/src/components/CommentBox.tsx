@@ -3,7 +3,8 @@ import DateComponent from './Date';
 import ArrowUp from '../assets/arrowUp.svg?react';
 import ArrowDown from '../assets/arrowDown.svg?react';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { UserContext } from '../context/UserContextDefinition';
 
 type CommentProp = {
 	elem: Comment;
@@ -17,23 +18,35 @@ export default function CommentBox({ elem }: CommentProp) {
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const [isDisliked, setIsDisliked] = useState<boolean>(false);
 
-	function handleLikes() {
-		if (isLiked === true) {
-			setIsLiked(false);
-		} else {
-			setIsLiked(true);
+	const { user } = useContext(UserContext);
 
-			if (isDisliked === true) setIsDisliked(false);
+	function handleLikes() {
+		if (!user) {
+			console.log('You need to log in!');
+			return;
+		} else {
+			if (isLiked === true) {
+				setIsLiked(false);
+			} else {
+				setIsLiked(true);
+
+				if (isDisliked === true) setIsDisliked(false);
+			}
 		}
 	}
 
 	function handleDislikes() {
-		if (isDisliked === true) {
-			setIsDisliked(false);
+		if (!user) {
+			console.log('You need to log in!');
+			return;
 		} else {
-			setIsDisliked(true);
+			if (isDisliked === true) {
+				setIsDisliked(false);
+			} else {
+				setIsDisliked(true);
 
-			if (isLiked === true) setIsLiked(false);
+				if (isLiked === true) setIsLiked(false);
+			}
 		}
 	}
 
