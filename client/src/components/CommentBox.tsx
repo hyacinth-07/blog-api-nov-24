@@ -2,6 +2,7 @@ import { Comment } from '../types/types';
 import DateComponent from './Date';
 import ArrowUp from '../assets/arrowUp.svg?react';
 import ArrowDown from '../assets/arrowDown.svg?react';
+import { fetchLikesDislikes } from '../utilities/fetchLikesDislikes';
 
 import { useState, useContext } from 'react';
 import { UserContext } from '../context/UserContextDefinition';
@@ -27,6 +28,15 @@ export default function CommentBox({ elem }: CommentProp) {
 		} else {
 			if (isLiked === true) {
 				setIsLiked(false);
+				// try {
+				// 	fetchLikesDislikes(
+				// 		'http://localhost:3000/comment/like',
+				// 		user.id,
+				// 		elem.id
+				// 	);
+				// } catch (error) {
+				// 	console.error(error);
+				// }
 			} else {
 				setIsLiked(true);
 
