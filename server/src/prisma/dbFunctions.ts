@@ -100,57 +100,7 @@ export const getOnePost = async (
 
 // LIKE ONE COMMENT
 
-// export const likeComment = async (
-// 	userId: string,
-// 	commentId: string
-// ): Promise<void> => {
-// 	// check if user already liked the comment
-// 	const previousLike = await prisma.likedComments.findUnique({
-// 		where: {
-// 			userId_commentId: {
-// 				userId: userId,
-// 				commentId: commentId,
-// 			},
-// 		},
-// 	});
-
-// 	if (!previousLike) {
-// 		// check if user already disliked the comment
-// 		const previousDislike = await prisma.dislikedComments.findUnique({
-// 			where: {
-// 				userId_commentId: {
-// 					userId: userId,
-// 					commentId: commentId,
-// 				},
-// 			},
-// 		});
-
-// 		if (previousDislike) removeLike(userId, commentId);
-
-// 		// create the like between user and comment
-// 		await prisma.likedComments.create({
-// 			data: {
-// 				userId: userId,
-// 				commentId: commentId,
-// 			},
-// 		});
-
-// 		// add to like count
-// 		await prisma.comment.update({
-// 			where: {
-// 				id: commentId,
-// 			},
-// 			data: {
-// 				likes: { increment: 1 },
-// 			},
-// 		});
-// 	}
-// };
-
-export const likeComment = async (
-	userId: string,
-	commentId: string
-): Promise<void> => {
+export const likeComment = async (userId: string, commentId: string) => {
 	// check if user already liked the comment
 	const previousLike = await prisma.likedComments.findUnique({
 		where: {
@@ -164,7 +114,8 @@ export const likeComment = async (
 	// if they did, unlike the comment
 	if (previousLike) {
 		removeLike(userId, commentId);
-		return;
+		const data = getLikeCount(commentId);
+		return data;
 	} else {
 		// if they did not, like the comment
 		// and add to the like count
@@ -196,9 +147,12 @@ export const likeComment = async (
 		// if they did, remove the dislike
 		if (previousDislike) {
 			removeDislike(userId, commentId);
+			const data = getLikeCount(commentId);
+			return data;
 		} else {
 			// if they did not, do nothing
-			return;
+			const data = getLikeCount(commentId);
+			return data;
 		}
 	}
 };
@@ -230,10 +184,7 @@ export const removeLike = async (
 
 // DISLIKE ONE COMMENT
 
-export const dislikeComment = async (
-	userId: string,
-	commentId: string
-): Promise<void> => {
+export const dislikeComment = async (userId: string, commentId: string) => {
 	// check if user already disliked the comment
 	const previousDislike = await prisma.dislikedComments.findUnique({
 		where: {
@@ -244,19 +195,13 @@ export const dislikeComment = async (
 		},
 	});
 
-	if (!previousDislike) {
-		// check if user already liked the comment
-		const previousLike = await prisma.likedComments.findUnique({
-			where: {
-				userId_commentId: {
-					userId: userId,
-					commentId: commentId,
-				},
-			},
-		});
-
-		if (previousLike) await removeLike(userId, commentId);
-
+	// if they did, un-dislike the comment
+	if (previousDislike) {
+		removeDislike(userId, commentId);
+		return;
+	} else {
+		// if they did not, dislike the comment
+		// and add to the dislike count
 		await prisma.dislikedComments.create({
 			data: {
 				userId: userId,
@@ -272,6 +217,23 @@ export const dislikeComment = async (
 				dislikes: { increment: 1 },
 			},
 		});
+
+		// check if they also liked it
+		const previousLike = await prisma.likedComments.findUnique({
+			where: {
+				userId_commentId: {
+					userId: userId,
+					commentId: commentId,
+				},
+			},
+		});
+		// if they did, remove the like
+		if (previousLike) {
+			removeLike(userId, commentId);
+		} else {
+			// if they did not, do nothing
+			return;
+		}
 	}
 };
 
@@ -299,3 +261,29 @@ export const removeDislike = async (
 		},
 	});
 };
+
+// GET LIKE COUNT
+
+async function getLikeCount(commentId: string) {
+	const data = await prisma.comment.findUnique({
+		where: {
+			id: commentId,
+		},
+	});
+
+	if (data === null) return;
+	return data;
+}
+
+// GET DISLIKE COUNT
+
+// async function getDislikeCount(commentId: string) {
+// 	const data = await prisma.comment.findUnique({
+// 		where: {
+// 			id: commentId,
+// 		},
+// 	});
+
+// 	if (data === null) return;
+// 	return data.dislikes;
+// }

@@ -31,26 +31,32 @@ export default function CommentBox({ elem }: CommentProp) {
 		} else {
 			if (isLiked === true) {
 				try {
-					fetchLikesDislikes('removeLike', user.id, elem.id);
+					// THIS IS A PROMISE BUT I CAN'T ASYNC AWAIT IT
+					// FIND A WAY
+
+					const data = fetchLikesDislikes('removeLike', user.id, elem.id);
 					setIsLiked(false);
-					// setLikes(likes - 1);
+					console.log(data);
+					// setLikes(data.likes);
 				} catch (error) {
 					console.error(error);
 				}
 			} else {
 				try {
-					fetchLikesDislikes(`like`, user.id, elem.id);
+					const data = fetchLikesDislikes(`like`, user.id, elem.id);
 					setIsLiked(true);
-					// setLikes(likes + 1);
+					console.log(data);
+					// setLikes(data.likes);
 				} catch (error) {
 					console.error(error);
 				}
 
 				if (isDisliked === true) {
 					try {
-						fetchLikesDislikes(`dislike`, user.id, elem.id);
+						const data = fetchLikesDislikes(`dislike`, user.id, elem.id);
 						setIsDisliked(false);
-						// setDislikes(dislikes - 1);
+						console.log(data);
+						// setDislikes(data.dislikes);
 					} catch (error) {
 						console.error(error);
 					}
