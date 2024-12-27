@@ -97,10 +97,41 @@ export const userSignUp = async (
 };
 
 // LIKE COMMENTS
-
 export const likeComment = async (
 	req: Request,
 	res: Response
 ): Promise<void> => {
-	// await dbFunctions.likeComment();
+	const userId = req.body.userId;
+	const commentId = req.body.commentId;
+	await dbFunctions.likeComment(userId, commentId);
+};
+
+// REMOVE LIKED COMMENT
+export const removeLikeComment = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	const userId = req.body.userId;
+	const commentId = req.body.commentId;
+	await dbFunctions.removeLike(userId, commentId);
+};
+
+// DISLIKE COMMENTS
+export const dislikeComment = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	const userId = req.body.userId;
+	const commentId = req.body.commentId;
+	await dbFunctions.dislikeComment(userId, commentId);
+};
+
+// REMOVE DISLIKE COMMENTS
+export const removeDislikeComment = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	const userId = req.body.userId;
+	const commentId = req.body.commentId;
+	await dbFunctions.removeDislike(userId, commentId);
 };

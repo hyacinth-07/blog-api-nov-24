@@ -5,12 +5,15 @@ export const fetchLikesDislikes = async (
 ) => {
 	const body = { userId: userId, commentId: commentId };
 
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(body),
-	});
+	const response = await fetch(
+		`http://localhost:3000/api/${commentId}/${url}`,
+		{
+			method: 'POST',
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body),
+		}
+	);
 
 	if (!response.ok) {
 		try {

@@ -21,16 +21,16 @@ router.get('/:postId', blog.onePostPage);
 // POST COMMENTS
 
 // LIKE COMMENT
-router.post('/:postId/:commentId/like', blog.likeComment);
+router.post('/:commentId/like', blog.likeComment);
 
 // REMOVE LIKE COMMENT
-router.post('/:postId/:commentId/removeLike');
+router.post('/:commentId/removeLike', blog.removeLikeComment);
 
 // DISLIKE COMMENT
-router.post('/:postId/:commentId/dislike');
+router.post('/:commentId/dislike', blog.dislikeComment);
 
 // DISLIKE COMMENT
-router.post('/:postId/:commentId/removeDislike');
+router.post('/:commentId/removeDislike', blog.removeDislikeComment);
 
 ///// USER PAGES
 

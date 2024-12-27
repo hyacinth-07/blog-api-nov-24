@@ -19,6 +19,9 @@ export default function CommentBox({ elem }: CommentProp) {
 	const [isLiked, setIsLiked] = useState<boolean>(false);
 	const [isDisliked, setIsDisliked] = useState<boolean>(false);
 
+	const [likes, setLikes] = useState<number>(elem.likes);
+	const [dislikes, setDislikes] = useState<number>(elem.dislikes);
+
 	const { user } = useContext(UserContext);
 
 	function handleLikes() {
@@ -27,20 +30,31 @@ export default function CommentBox({ elem }: CommentProp) {
 			return;
 		} else {
 			if (isLiked === true) {
-				setIsLiked(false);
-				// try {
-				// 	fetchLikesDislikes(
-				// 		'http://localhost:3000/comment/like',
-				// 		user.id,
-				// 		elem.id
-				// 	);
-				// } catch (error) {
-				// 	console.error(error);
-				// }
+				try {
+					fetchLikesDislikes('removeLike', user.id, elem.id);
+					setIsLiked(false);
+					setLikes(likes - 1);
+				} catch (error) {
+					console.error(error);
+				}
 			} else {
-				setIsLiked(true);
+				try {
+					fetchLikesDislikes(`like`, user.id, elem.id);
+					setIsLiked(true);
+					setLikes(likes + 1);
+				} catch (error) {
+					console.error(error);
+				}
 
-				if (isDisliked === true) setIsDisliked(false);
+				if (isDisliked === true) {
+					try {
+						fetchLikesDislikes(`dislike`, user.id, elem.id);
+						setIsDisliked(false);
+						setDislikes(dislikes - 1);
+					} catch (error) {
+						console.error(error);
+					}
+				}
 			}
 		}
 	}
@@ -75,7 +89,7 @@ export default function CommentBox({ elem }: CommentProp) {
 							className={`w-6 h-6 ${isLiked ? 'fill-brown-950' : 'fill-none'}`}
 							onClick={handleLikes}
 						/>
-						{elem.likes}
+						{likes}
 					</span>
 					<span className="flex gap-3">
 						<ArrowDown
@@ -84,7 +98,7 @@ export default function CommentBox({ elem }: CommentProp) {
 							}`}
 							onClick={handleDislikes}
 						/>
-						{elem.dislikes}
+						{dislikes}
 					</span>
 				</section>
 			</article>
