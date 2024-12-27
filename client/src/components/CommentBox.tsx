@@ -33,7 +33,7 @@ export default function CommentBox({ elem }: CommentProp) {
 				try {
 					fetchLikesDislikes('removeLike', user.id, elem.id);
 					setIsLiked(false);
-					setLikes(likes - 1);
+					// setLikes(likes - 1);
 				} catch (error) {
 					console.error(error);
 				}
@@ -41,7 +41,7 @@ export default function CommentBox({ elem }: CommentProp) {
 				try {
 					fetchLikesDislikes(`like`, user.id, elem.id);
 					setIsLiked(true);
-					setLikes(likes + 1);
+					// setLikes(likes + 1);
 				} catch (error) {
 					console.error(error);
 				}
@@ -50,7 +50,7 @@ export default function CommentBox({ elem }: CommentProp) {
 					try {
 						fetchLikesDislikes(`dislike`, user.id, elem.id);
 						setIsDisliked(false);
-						setDislikes(dislikes - 1);
+						// setDislikes(dislikes - 1);
 					} catch (error) {
 						console.error(error);
 					}
